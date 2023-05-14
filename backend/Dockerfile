@@ -12,6 +12,7 @@ RUN apt-get install -y ${RUNTIME_PACKAGES}
 
 COPY . /app
 
+RUN bundle config set --global force_ruby_platform true
 RUN bundle install
 
 COPY entrypoint.sh /usr/bin/
