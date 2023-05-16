@@ -27,17 +27,17 @@ services:
     depends_on:
       - db
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   volumes:
-  #     - "./frontend:/app"
-  #     - node_modules:/app/node_modules
-  #   ports:
-  #     - "3000:3000"
-  #   command: npm run serve
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - "./frontend:/app"
+      - node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run serve
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
