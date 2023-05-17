@@ -1,14 +1,19 @@
 <template>
   <div>
     <h1>{{ title }}</h1>
-    <p v-if="isEnabled">{{ subtitle }}</p>
-    <button @dblclick="toggle">toggle</button>
-    <p>{{ text }}</p>
+    <TestComponent @toggle="toggle" message="Give data for component" />
+    <p v-if="isEnabled">hello</p>
   </div>
 </template>
 
 <script>
+import TestComponent from "@/components/TestComponent.vue";
+
 export default {
+  components: {
+    TestComponent
+  },
+
   data() {
     return {
       title: 'New vue app',
@@ -26,6 +31,7 @@ export default {
       }
     }
   },
+
   methods: {
     toggle() {
       this.isEnabled = !this.isEnabled
@@ -33,3 +39,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  p {
+    font-size: 20px;
+    color: blue;
+  }
+</style>
