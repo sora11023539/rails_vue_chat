@@ -1,8 +1,14 @@
 <template>
   <div class="container welcome">
     <p>Welcome!</p>
-    <LoginForm />
-    <SignupForm />
+    <div v-if="shouldShowLoginForm">
+      <LoginForm />
+      <p class="change-form"><span @click="shouldShowLoginForm = false">Signup</span></p>
+    </div>
+    <div v-if="!shouldShowLoginForm">
+      <SignupForm />
+      <p class="change-form"><span @click="shouldShowLoginForm = true">Login</span></p>
+    </div>
   </div>
 </template>
 
@@ -11,6 +17,12 @@ import LoginForm from '@/components/LoginForm.vue';
 import SignupForm from '@/components/SignupForm.vue';
 
 export default {
+  data() {
+    return {
+      shouldShowLoginForm: true,
+    };
+  },
+
   components: { LoginForm, SignupForm },
 };
 </script>
@@ -45,5 +57,10 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
+}
+
+.change-form {
+  font-size: 14px;
+  margin: 10px;
 }
 </style>
