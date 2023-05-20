@@ -1,4 +1,4 @@
-class Auth::RegistrationsController < DeviseTokenAuth:RegistrationsController
+class Auth::RegistrationsController < DeviseTokenAuth::RegistrationsController
 
   private
 
