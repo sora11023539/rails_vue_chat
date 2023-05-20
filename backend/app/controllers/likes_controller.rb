@@ -10,8 +10,24 @@ class LikesController < ApplicationController
     status: 200
   end
 
+  def destroy
+    like.destroy!
+    render json: {
+      id: like.id,
+      email: like.user.email,
+      message: '削除に成功しました'
+    }
+  end
+
+  private
+
   def like
-    @like ||= current_user.likes.create(message: message)
+    @like ||=
+      if action_name === 'create'
+        current_user.likes.create!(message: message)
+      else
+        Like.find(params[:id])
+      end
   end
 
   def message
