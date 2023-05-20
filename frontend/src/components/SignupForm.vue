@@ -16,6 +16,8 @@
 import axios from 'axios';
 
 export default {
+  emits: ['redirectToChatRoom'],
+
   data() {
     return {
       name: '',
@@ -29,6 +31,7 @@ export default {
   methods: {
     async signUp() {
       this.error = null;
+
       try {
         const res = await axios.post('http://localhost:8000/auth', {
           name: this.name,
@@ -36,13 +39,19 @@ export default {
           password: this.password,
           password_confirmation: this.password_confirmation,
         });
+
         if (!res) {
-          throw new Error('Could not signup')
+          throw new Error('Could not signup');
         }
+
+        if (!this.error) {
+          this.$emit('redirectToChatRoom');
+        }
+
         console.log({ res });
         return res;
       } catch (error) {
-        this.error = 'Could not signup'
+        this.error = 'Could not signup';
       }
     },
   },

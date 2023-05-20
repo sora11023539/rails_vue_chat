@@ -14,6 +14,8 @@
 import axios from 'axios';
 
 export default {
+  emits: ['redirectToChatRoom'],
+
   data() {
     return {
       email: '',
@@ -31,9 +33,15 @@ export default {
           email: this.email,
           password: this.password,
         });
+
         if (!res) {
           throw new Error('Incorrect email or password');
         }
+
+        if (!this.error) {
+          this.$emit('redirectToChatRoom');
+        }
+
         console.log({ res });
         return res;
       } catch (error) {

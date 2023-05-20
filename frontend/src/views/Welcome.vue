@@ -2,11 +2,11 @@
   <div class="container welcome">
     <p>Welcome!</p>
     <div v-if="shouldShowLoginForm">
-      <LoginForm />
+      <LoginForm @redirectToChatRoom="redirectToChatRoom" />
       <p class="change-form"><span @click="shouldShowLoginForm = false">Signup</span></p>
     </div>
     <div v-if="!shouldShowLoginForm">
-      <SignupForm />
+      <SignupForm @redirectToChatRoom="redirectToChatRoom" />
       <p class="change-form"><span @click="shouldShowLoginForm = true">Login</span></p>
     </div>
   </div>
@@ -24,6 +24,12 @@ export default {
   },
 
   components: { LoginForm, SignupForm },
+
+  methods: {
+    redirectToChatRoom() {
+      this.$router.push({ name: 'Chatroom' });
+    },
+  },
 };
 </script>
 
