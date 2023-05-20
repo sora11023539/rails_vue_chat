@@ -1,7 +1,14 @@
 class MessagesController < ApplicationController
+  before_action :authenticate_user!, only: %i[index]
+
   def index
-    messages = Message.all
-    messages_array = messages.map do |message|
+    render json: messages, status: 200
+  end
+
+  private
+
+  def messages
+    @messages ||= Message.all.map do |message|
       {
         id: message.id,
         user_id: message.user.id,
@@ -11,7 +18,5 @@ class MessagesController < ApplicationController
         created_at: message.created_at
       }
     end
-
-    render json: messages_array, status: 200
   end
 end
