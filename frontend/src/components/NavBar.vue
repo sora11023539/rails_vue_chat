@@ -1,20 +1,58 @@
 <template>
   <nav>
     <div>
-      <p>Hello, <span class="name">{{ name }}</span></p>
+      <p>
+        Hello, <span class="name">{{ name }}</span>
+      </p>
       <p class="email">{{ email }} is login</p>
     </div>
-    <button>Logout</button>
+    <button @click="logout">Logout</button>
   </nav>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       name: window.localStorage.getItem('name'),
       email: window.localStorage.getItem('uid'),
+      error: null,
     };
+  },
+
+  methods: {
+    async logout() {
+      this.error = null;
+
+      try {
+        const res = await axios.delete('http://localhost:8000/auth/sign_out', {
+          headers: {
+            uid: this.email,
+            'access-token': window.localStorage.getItem('access-token'),
+            client: window.localStorage.getItem('client'),
+          },
+        });
+
+        if (!res) {
+          new Error('Could not logout');
+        }
+
+        if (!this.error) {
+          console.log('Logout');
+          window.localStorage.removeItem('access-token');
+          window.localStorage.removeItem('uid');
+          window.localStorage.removeItem('client');
+          window.localStorage.removeItem('name');
+          this.$router.push({ name: 'Welcome' });
+        }
+
+        return res;
+      } catch (error) {
+        this.error = 'Could not logout';
+      }
+    },
   },
 };
 </script>
