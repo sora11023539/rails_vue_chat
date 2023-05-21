@@ -8,22 +8,13 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    message
+    user = User.find_by(email: data["email"])
+    message = user.messages.create!(content: data["message"])
 
     ActionCable.server.broadcast :room_channel, {
-      message: data[:message],
+      message: data["message"],
       name: user.name,
       created_at: message.created_at
     }
-  end
-
-  private
-
-  def user
-    @user ||= User.find_by(email: data[:email])
-  end
-
-  def message
-    @message ||= user.messages.create!(content: data[:message])
   end
 end
