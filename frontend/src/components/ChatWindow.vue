@@ -4,7 +4,7 @@
       <ul v-for="message in messages" :key="message.id">
         <li :class="{ received: message.email !== uid, sent: message.email === uid }">
           <span class="name">{{ message.name }}</span>
-          <div class="message" @dblclick="createLike(message.id)">
+          <div class="message" @dblclick="handleLike(message)">
             {{ message.content }}
             <div v-if="message.likes.length" class="heart-container">
               <font-awesome-icon icon="heart" class="heart" />
@@ -32,6 +32,17 @@ export default {
   },
 
   methods: {
+    handleLike(message) {
+      for (let index = 0; index < message.likes.length; index++) {
+        const like = message.likes[index];
+        if (like.email === this.uid) {
+          this.deleteLike(like.id);
+          return;
+        }
+      }
+      this.createLike(message.id);
+    },
+
     async createLike(messageId) {
       try {
         const res = await axios.post(
@@ -49,6 +60,26 @@ export default {
         if (!res) {
           new Error('Could not do like');
         }
+        this.$emit('connectCable');
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async deleteLike(likeId) {
+      try {
+        const res = await axios.delete(`http://localhost:8000/likes/${likeId}`, {
+          headers: {
+            uid: this.uid,
+            'access-token': window.localStorage.getItem('access-token'),
+            client: window.localStorage.getItem('client'),
+          },
+        });
+
+        if (!res) {
+          new Error('Could not delete like');
+        }
+
         this.$emit('connectCable');
       } catch (err) {
         console.log(err);
