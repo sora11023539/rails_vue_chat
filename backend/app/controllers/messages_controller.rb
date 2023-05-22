@@ -2,13 +2,13 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!, only: %i[index]
 
   def index
-    render json: messages, status: 200
+    render json: messages, status: :ok
   end
 
   private
 
   def messages
-    @messages ||= Message.all.map do |message|
+    @messages ||= Message.includes(:user, [likes: :user]).map do |message|
       {
         id: message.id,
         user_id: message.user.id,

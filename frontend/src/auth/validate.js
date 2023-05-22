@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { ref } from 'vue';
 
+import removeItem from './removeItem';
+
 const error = ref(null);
 
 const validate = async () => {
@@ -26,11 +28,7 @@ const validate = async () => {
     return res;
   } catch (err) {
     error.value = 'Failed authorize';
-
-    window.localStorage.removeItem('access-token');
-    window.localStorage.removeItem('uid');
-    window.localStorage.removeItem('client');
-    window.localStorage.removeItem('name');
+    removeItem();
   }
 };
 

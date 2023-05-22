@@ -7,7 +7,7 @@ class LikesController < ApplicationController
       email: current_user.email,
       message: 'Success!'
     },
-    status: 200
+    status: :ok
   end
 
   def destroy

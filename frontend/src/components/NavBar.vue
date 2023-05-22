@@ -12,6 +12,7 @@
 
 <script>
 import axios from 'axios';
+import removeItem from '@/auth/removeItem';
 
 export default {
   data() {
@@ -41,10 +42,7 @@ export default {
 
         if (!this.error) {
           console.log('Logout');
-          window.localStorage.removeItem('access-token');
-          window.localStorage.removeItem('uid');
-          window.localStorage.removeItem('client');
-          window.localStorage.removeItem('name');
+          removeItem();
           this.$router.push({ name: 'Welcome' });
         }
 
