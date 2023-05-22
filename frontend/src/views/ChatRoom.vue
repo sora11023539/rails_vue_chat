@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <NavBar />
-    <ChatWindow @connectCable="connectCable" :messages="messages" />
+    <ChatWindow @connectCable="connectCable" :messages="formattedMessages" />
     <NewChatForm @connectCable="connectCable" />
   </div>
 </template>
@@ -9,6 +9,8 @@
 <script>
 import axios from 'axios';
 import ActionCable from 'actioncable';
+import { formatDistanceToNow } from 'date-fns';
+import { en } from 'date-fns/locale';
 
 import NavBar from '@/components/NavBar.vue';
 import ChatWindow from '@/components/ChatWindow.vue';
@@ -21,6 +23,16 @@ export default {
     return {
       messages: [],
     };
+  },
+
+  computed: {
+    formattedMessages() {
+      if (!this.messages.length) return [];
+      return this.messages.map((message) => {
+        let time = formatDistanceToNow(new Date(message.created_at), { locale: en });
+        return { ...message, created_at: time };
+      });
+    },
   },
 
   methods: {
